@@ -28,11 +28,19 @@ Portail central pour regrouper plusieurs sites web sur une landing publique uniq
 ```bash
 npm install
 ```
-2. Verifier `.env` ou repartir de `.env.example`.
+2. Creer un `.env` local SQLite. Exemple minimal:
+```env
+DATABASE_URL="file:./dev.db"
+ADMIN_USERNAME="admin"
+ADMIN_PASSWORD_HASH="votre-hash-bcrypt"
+AUTH_SECRET="votre-secret-long"
+INTERNAL_API_TOKEN="votre-token-interne"
+APP_URL="http://localhost:3000"
+```
 3. Generer Prisma et creer la base locale:
 ```bash
-npm run prisma:generate
-npm run prisma:push
+npm run prisma:generate:local
+npm run prisma:push:local
 npm run prisma:seed
 ```
 4. Lancer le projet:
@@ -74,7 +82,6 @@ POST /api/internal/sites
 Authentification:
 
 - header `Authorization: Bearer <INTERNAL_API_TOKEN>`
-- ou header `x-api-token: <INTERNAL_API_TOKEN>`
 
 Payload JSON attendu:
 
@@ -98,16 +105,18 @@ Le `slug` peut etre omis: il sera derive du `name`.
 
 ## PostgreSQL en production
 
-La V1 tourne en SQLite local pour accelerer l'initialisation. Pour la production:
+La V1 tourne en SQLite local pour accelerer l'initialisation, mais la cible principale est PostgreSQL. Le schema de production est `[prisma/schema.prisma](/C:/Users/allan/Documents/portail-sites/prisma/schema.prisma)` et le schema local est `[prisma/schema.sqlite.prisma](/C:/Users/allan/Documents/portail-sites/prisma/schema.sqlite.prisma)`.
+
+Pour la production:
 
 1. creer une base PostgreSQL
-2. adapter `provider = "postgresql"` dans `[prisma/schema.prisma](/C:/Users/allan/Documents/portail-sites/prisma/schema.prisma)`
+2. copier `[.env.example](/C:/Users/allan/Documents/portail-sites/.env.example)` vers `.env`
 3. remplacer `DATABASE_URL`
 4. executer:
 
 ```bash
 npm run prisma:generate
-npm run prisma:migrate
+npm run prisma:deploy
 ```
 
 Ensuite:
@@ -133,8 +142,9 @@ sudo apt install -y nodejs
 Dans le dossier du projet:
 
 ```bash
-npm install
+npm ci
 npm run prisma:generate
+npm run prisma:deploy
 npm run build
 ```
 
@@ -153,6 +163,7 @@ EnvironmentFile=/var/www/portail-sites/.env
 ExecStart=/usr/bin/npm run start
 Restart=always
 User=www-data
+Environment=PORT=3000
 
 [Install]
 WantedBy=multi-user.target
@@ -179,6 +190,8 @@ server {
     }
 }
 ```
+
+Avec HTTPS en production, ajoutez Certbot puis redirigez HTTP vers HTTPS.
 
 ## Verifications utiles
 

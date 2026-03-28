@@ -14,6 +14,10 @@ const statusMessages: Record<string, string> = {
   created: "Site cree avec succes.",
   updated: "Site mis a jour avec succes.",
   deleted: "Site supprime avec succes.",
+  toggled: "Mise a jour effectuee.",
+  invalid: "Action refusee: identifiant invalide.",
+  missing: "Le site cible est introuvable.",
+  error: "Une erreur est survenue pendant l'action.",
 };
 
 export default async function AdminSitesPage({ searchParams }: SitesPageProps) {
@@ -46,38 +50,44 @@ export default async function AdminSitesPage({ searchParams }: SitesPageProps) {
       ) : null}
 
       <section className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/5">
-        <div className="grid gap-px bg-white/8">
-          {sites.map((site) => (
-            <article
-              className="grid gap-4 bg-neutral-950/85 p-5 xl:grid-cols-[1.5fr_1fr_1fr_auto]"
-              key={site.id}
-            >
-              <div className="grid gap-2">
-                <div className="flex flex-wrap items-center gap-2">
-                  <h3 className="text-lg font-semibold text-white">{site.name}</h3>
-                  <Badge>{site.category}</Badge>
-                  {site.isFeatured ? <Badge className="bg-white text-neutral-950">En avant</Badge> : null}
-                  {!site.isActive ? <Badge className="border-rose-300/20 text-rose-200">Inactif</Badge> : null}
+        {sites.length ? (
+          <div className="grid gap-px bg-white/8">
+            {sites.map((site) => (
+              <article
+                className="grid gap-4 bg-neutral-950/85 p-5 xl:grid-cols-[1.5fr_1fr_1fr_auto]"
+                key={site.id}
+              >
+                <div className="grid gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="text-lg font-semibold text-white">{site.name}</h3>
+                    <Badge>{site.category}</Badge>
+                    {site.isFeatured ? <Badge className="bg-white text-neutral-950">En avant</Badge> : null}
+                    {!site.isActive ? <Badge className="border-rose-300/20 text-rose-200">Inactif</Badge> : null}
+                  </div>
+                  <p className="text-sm text-white/65">{site.shortDescription}</p>
+                  <p className="text-xs text-white/45">{site.url}</p>
                 </div>
-                <p className="text-sm text-white/65">{site.shortDescription}</p>
-                <p className="text-xs text-white/45">{site.url}</p>
-              </div>
 
-              <div className="grid gap-2 text-sm text-white/70">
-                <p>Slug: {site.slug}</p>
-                <p>Ordre: {site.sortOrder}</p>
-                <p>Tags: {formatTags(site.tags) || "Aucun"}</p>
-              </div>
+                <div className="grid gap-2 text-sm text-white/70">
+                  <p>Slug: {site.slug}</p>
+                  <p>Ordre: {site.sortOrder}</p>
+                  <p>Tags: {formatTags(site.tags) || "Aucun"}</p>
+                </div>
 
-              <div className="grid gap-1 text-sm text-white/60">
-                <p>Cree le {site.createdAt.toLocaleDateString("fr-FR")}</p>
-                <p>Maj le {site.updatedAt.toLocaleDateString("fr-FR")}</p>
-              </div>
+                <div className="grid gap-1 text-sm text-white/60">
+                  <p>Cree le {site.createdAt.toLocaleDateString("fr-FR")}</p>
+                  <p>Maj le {site.updatedAt.toLocaleDateString("fr-FR")}</p>
+                </div>
 
-              <SiteRowActions isActive={site.isActive} isFeatured={site.isFeatured} siteId={site.id} />
-            </article>
-          ))}
-        </div>
+                <SiteRowActions isActive={site.isActive} isFeatured={site.isFeatured} siteId={site.id} />
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div className="p-8 text-center text-sm text-white/60">
+            Aucun site en base pour le moment. Creez la premiere entree depuis l&apos;admin.
+          </div>
+        )}
       </section>
     </div>
   );

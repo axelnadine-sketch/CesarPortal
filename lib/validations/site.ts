@@ -34,4 +34,6 @@ export const siteApiSchema = z.object({
   sortOrder: z.number().int().min(0).max(9999).optional(),
 });
 
+export const siteIdSchema = z.string().cuid();
+
 export type SiteFormValues = z.infer<typeof siteFormSchema>;

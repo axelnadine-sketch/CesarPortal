@@ -1,7 +1,6 @@
-import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { ButtonLink } from "@/components/ui/button";
 import { getSiteTags } from "@/lib/site-service";
+import { SiteCardImage } from "@/components/site/site-card-image";
 import type { Site } from "@prisma/client";
 
 type SiteCardProps = {
@@ -14,13 +13,7 @@ export function SiteCard({ site }: SiteCardProps) {
   return (
     <article className="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.045] shadow-[0_18px_60px_rgba(0,0,0,0.24)] backdrop-blur transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.08]">
       <div className="relative aspect-[16/10] overflow-hidden">
-        <Image
-          alt={site.name}
-          className="object-cover transition duration-500 group-hover:scale-105"
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          src={site.imageUrl}
-        />
+        <SiteCardImage alt={site.name} src={site.imageUrl} />
         <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
         <div className="absolute left-4 top-4 flex gap-2">
           <Badge>{site.category}</Badge>
@@ -47,9 +40,14 @@ export function SiteCard({ site }: SiteCardProps) {
           </div>
         ) : null}
 
-        <ButtonLink className="w-fit" href={site.url} variant="secondary">
+        <a
+          className="inline-flex w-fit items-center justify-center rounded-full border border-white/12 bg-white/6 px-5 py-3 text-sm font-medium text-white transition duration-200 hover:bg-white/10"
+          href={site.url}
+          rel="noreferrer"
+          target="_blank"
+        >
           Visiter le site
-        </ButtonLink>
+        </a>
       </div>
     </article>
   );

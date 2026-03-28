@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { slugify } from "@/lib/utils";
-import type { SiteFormActionState } from "@/app/admin/(protected)/sites/actions";
+import type { SiteFormActionState } from "@/types/site-form";
 
 type SiteFormValues = {
   name: string;

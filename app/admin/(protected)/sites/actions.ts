@@ -2,18 +2,12 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { requireAdminSession } from "@/lib/auth";
 import { parseTags } from "@/lib/utils";
-import { siteFormSchema } from "@/lib/validations/site";
-
-type SiteFormActionState = {
-  success: boolean;
-  message?: string;
-  errors?: Partial<Record<keyof ReturnType<typeof buildSitePayload>, string>> & {
-    _form?: string;
-  };
-};
+import { siteFormSchema, siteIdSchema } from "@/lib/validations/site";
+import type { SiteFormActionState } from "@/types/site-form";
 
 function buildSitePayload(formData: FormData) {
   return {
@@ -73,6 +67,11 @@ function persistSuccess() {
   revalidatePath("/admin/sites");
 }
 
+function parseSiteId(formData: FormData) {
+  const parsed = siteIdSchema.safeParse(String(formData.get("siteId") ?? ""));
+  return parsed.success ? parsed.data : null;
+}
+
 export async function createSite(
   _prevState: SiteFormActionState,
   formData: FormData,
@@ -94,13 +93,27 @@ export async function createSite(
     };
   }
 
-  await prisma.site.create({
-    data: {
-      ...parsed.data,
-      longDescription: parsed.data.longDescription || null,
-      tags: parseTags(parsed.data.tags ?? "").join(", "),
-    },
-  });
+  try {
+    await prisma.site.create({
+      data: {
+        ...parsed.data,
+        longDescription: parsed.data.longDescription || null,
+        tags: parseTags(parsed.data.tags ?? "").join(", "),
+      },
+    });
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+      return {
+        success: false,
+        errors: { slug: "Ce slug est deja utilise." },
+      };
+    }
+
+    return {
+      success: false,
+      errors: { _form: "Impossible de creer ce site pour le moment." },
+    };
+  }
 
   persistSuccess();
   redirect("/admin/sites?status=created");
@@ -112,12 +125,12 @@ export async function updateSite(
 ): Promise<SiteFormActionState> {
   await requireAdminSession();
 
-  const siteId = String(formData.get("siteId") ?? "");
+  const siteId = parseSiteId(formData);
 
   if (!siteId) {
     return {
       success: false,
-      errors: { _form: "Identifiant de site introuvable." },
+      errors: { _form: "Identifiant de site invalide." },
     };
   }
 
@@ -136,14 +149,37 @@ export async function updateSite(
     };
   }
 
-  await prisma.site.update({
-    where: { id: siteId },
-    data: {
-      ...parsed.data,
-      longDescription: parsed.data.longDescription || null,
-      tags: parseTags(parsed.data.tags ?? "").join(", "),
-    },
-  });
+  try {
+    await prisma.site.update({
+      where: { id: siteId },
+      data: {
+        ...parsed.data,
+        longDescription: parsed.data.longDescription || null,
+        tags: parseTags(parsed.data.tags ?? "").join(", "),
+      },
+    });
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        return {
+          success: false,
+          errors: { slug: "Ce slug est deja utilise." },
+        };
+      }
+
+      if (error.code === "P2025") {
+        return {
+          success: false,
+          errors: { _form: "Ce site n'existe plus." },
+        };
+      }
+    }
+
+    return {
+      success: false,
+      errors: { _form: "Impossible de mettre ce site a jour pour le moment." },
+    };
+  }
 
   persistSuccess();
   redirect("/admin/sites?status=updated");
@@ -152,15 +188,26 @@ export async function updateSite(
 export async function deleteSite(formData: FormData) {
   await requireAdminSession();
 
-  const siteId = String(formData.get("siteId") ?? "");
+  const siteId = parseSiteId(formData);
 
   if (!siteId) {
-    return;
+    redirect("/admin/sites?status=invalid");
   }
 
-  await prisma.site.delete({
-    where: { id: siteId },
-  });
+  try {
+    await prisma.site.delete({
+      where: { id: siteId },
+    });
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
+      redirect("/admin/sites?status=missing");
+    }
+
+    redirect("/admin/sites?status=error");
+  }
 
   persistSuccess();
   redirect("/admin/sites?status=deleted");
@@ -169,10 +216,10 @@ export async function deleteSite(formData: FormData) {
 export async function toggleSiteActive(formData: FormData) {
   await requireAdminSession();
 
-  const siteId = String(formData.get("siteId") ?? "");
+  const siteId = parseSiteId(formData);
 
   if (!siteId) {
-    return;
+    redirect("/admin/sites?status=invalid");
   }
 
   const site = await prisma.site.findUnique({
@@ -181,7 +228,7 @@ export async function toggleSiteActive(formData: FormData) {
   });
 
   if (!site) {
-    return;
+    redirect("/admin/sites?status=missing");
   }
 
   await prisma.site.update({
@@ -190,16 +237,16 @@ export async function toggleSiteActive(formData: FormData) {
   });
 
   persistSuccess();
-  redirect("/admin/sites");
+  redirect("/admin/sites?status=toggled");
 }
 
 export async function toggleSiteFeatured(formData: FormData) {
   await requireAdminSession();
 
-  const siteId = String(formData.get("siteId") ?? "");
+  const siteId = parseSiteId(formData);
 
   if (!siteId) {
-    return;
+    redirect("/admin/sites?status=invalid");
   }
 
   const site = await prisma.site.findUnique({
@@ -208,7 +255,7 @@ export async function toggleSiteFeatured(formData: FormData) {
   });
 
   if (!site) {
-    return;
+    redirect("/admin/sites?status=missing");
   }
 
   await prisma.site.update({
@@ -217,7 +264,5 @@ export async function toggleSiteFeatured(formData: FormData) {
   });
 
   persistSuccess();
-  redirect("/admin/sites");
+  redirect("/admin/sites?status=toggled");
 }
-
-export type { SiteFormActionState };

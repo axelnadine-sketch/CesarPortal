@@ -20,13 +20,24 @@ async function signValue(value: string, secret: string) {
     ["sign"],
   );
 
-  const signature = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(value));
-  return Buffer.from(signature).toString("base64url");
+  return crypto.subtle.sign("HMAC", key, new TextEncoder().encode(value));
 }
 
 async function verifyValue(value: string, signature: string, secret: string) {
-  const expectedSignature = await signValue(value, secret);
-  return expectedSignature === signature;
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["verify"],
+  );
+
+  return crypto.subtle.verify(
+    "HMAC",
+    key,
+    Buffer.from(signature, "base64url"),
+    new TextEncoder().encode(value),
+  );
 }
 
 export async function createSessionToken(secret: string, expiresInSeconds: number) {
@@ -38,7 +49,7 @@ export async function createSessionToken(secret: string, expiresInSeconds: numbe
   const encodedPayload = encodeBase64Url(JSON.stringify(payload));
   const signature = await signValue(encodedPayload, secret);
 
-  return `${encodedPayload}.${signature}`;
+  return `${encodedPayload}.${Buffer.from(signature).toString("base64url")}`;
 }
 
 export async function verifySessionToken(token: string, secret: string) {

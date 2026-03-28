@@ -3,20 +3,20 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model Site {
   id               String   @id @default(cuid())
-  name             String   @db.VarChar(120)
-  slug             String   @unique @db.VarChar(140)
-  url              String   @db.VarChar(512)
-  shortDescription String   @db.VarChar(240)
-  longDescription  String?  @db.Text
-  category         String   @db.VarChar(80)
+  name             String
+  slug             String   @unique
+  url              String
+  shortDescription String
+  longDescription  String?
+  category         String
   tags             String?
-  imageUrl         String   @db.VarChar(512)
+  imageUrl         String
   isActive         Boolean  @default(true)
   isFeatured       Boolean  @default(false)
   sortOrder        Int      @default(0)
