@@ -68,7 +68,6 @@ export function SiteGridControls({ sites }: SiteGridControlsProps) {
     });
 
     if (sortMode === "random") {
-      randomKey;
       return shuffleSites(filtered);
     }
 
