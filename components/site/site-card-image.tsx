@@ -1,7 +1,8 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element */
+
 import { useState } from "react";
-import Image from "next/image";
 
 type SiteCardImageProps = {
   src: string;
@@ -19,12 +20,16 @@ export function SiteCardImage({ src, alt }: SiteCardImageProps) {
   const [currentSrc, setCurrentSrc] = useState(initialSrc);
 
   return (
-    <Image
+    <img
       alt={alt}
-      className="object-cover transition duration-500 group-hover:scale-105"
-      fill
-      onError={() => setCurrentSrc(FALLBACK_SRC)}
-      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+      className="absolute inset-0 h-full w-full object-contain p-3"
+      decoding="async"
+      loading="lazy"
+      onError={() => {
+        if (currentSrc !== FALLBACK_SRC) {
+          setCurrentSrc(FALLBACK_SRC);
+        }
+      }}
       src={currentSrc}
     />
   );

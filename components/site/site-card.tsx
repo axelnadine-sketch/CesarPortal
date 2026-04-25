@@ -36,7 +36,7 @@ export function SiteCard({ site }: SiteCardProps) {
     <article className="group relative overflow-hidden rounded-[2rem] border border-[#27476a] bg-[linear-gradient(180deg,rgba(37,39,46,0.98),rgba(31,33,40,0.98))] shadow-[0_18px_60px_rgba(0,0,0,0.24)] transition duration-300 hover:-translate-y-1 hover:border-[#60a5fa]/80 hover:shadow-[0_0_0_1px_rgba(96,165,250,0.18),0_18px_70px_rgba(37,99,235,0.12)]">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.10),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.06),transparent_28%)] opacity-80" />
 
-      <div className="relative aspect-[16/10] overflow-hidden border-b border-[#24384f]">
+      <div className="relative h-48 overflow-hidden border-b border-[#24384f] bg-[#0b1220] sm:h-56">
         <SiteCardImage alt={site.name} src={site.imageUrl} />
         <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
         <div className="absolute left-4 top-4 flex flex-wrap gap-2">
