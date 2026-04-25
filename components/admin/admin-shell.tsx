@@ -17,7 +17,7 @@ export function AdminShell({ children }: AdminShellProps) {
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.07),transparent_30%),linear-gradient(180deg,#111111_0%,#050505_100%)] text-white">
       <div className="mx-auto flex min-h-screen max-w-7xl flex-col px-6 py-6 lg:px-8">
-        <header className="mb-8 flex flex-col gap-5 rounded-[2rem] border border-white/10 bg-white/5 p-5 backdrop-blur md:flex-row md:items-center md:justify-between">
+        <header className="mb-8 flex flex-col gap-5 rounded-[2rem] border border-[#2d2d30] bg-[#2d2d30] p-5 backdrop-blur md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-xs uppercase tracking-[0.28em] text-white/45">Administration</p>
             <h1 className="mt-2 text-2xl font-semibold">{APP_NAME}</h1>
@@ -27,7 +27,7 @@ export function AdminShell({ children }: AdminShellProps) {
             {navigation.map((item) => (
               <Link
                 className={cn(
-                  "rounded-full border border-white/10 px-4 py-2 text-sm text-white/80 transition hover:border-white/20 hover:bg-white/8 hover:text-white",
+                  "rounded-full border border-[#2d2d30] px-4 py-2 text-sm text-white/80 transition hover:border-white/20 hover:bg-white/8 hover:text-white",
                 )}
                 href={item.href}
                 key={item.href}
@@ -37,7 +37,7 @@ export function AdminShell({ children }: AdminShellProps) {
             ))}
             <form action={logoutAdmin}>
               <button
-                className="rounded-full border border-white/10 px-4 py-2 text-sm text-white/80 transition hover:border-white/20 hover:bg-white/8 hover:text-white"
+                className="rounded-full border border-[#2d2d30] px-4 py-2 text-sm text-white/80 transition hover:border-white/20 hover:bg-white/8 hover:text-white"
                 type="submit"
               >
                 Deconnexion

@@ -2,8 +2,8 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = {
-  primary:
-    "bg-white text-neutral-950 shadow-[0_12px_30px_rgba(255,255,255,0.12)] hover:bg-neutral-200",
+ primary:
+  "border border-[#007acc]/40 bg-[#007acc]/20 text-[#cfe8ff] shadow-[0_0_24px_rgba(56,189,248,0.16)] hover:bg-[#007acc]/30",
   secondary:
     "border border-white/12 bg-white/6 text-white hover:bg-white/10",
   ghost: "text-white/80 hover:bg-white/8 hover:text-white",

@@ -12,9 +12,9 @@ export default async function AdminDashboardPage() {
     <div className="grid gap-6">
       <section className="rounded-[2rem] border border-white/10 bg-white/5 p-8">
         <p className="text-xs uppercase tracking-[0.32em] text-white/45">Dashboard</p>
-        <h2 className="mt-3 text-3xl font-semibold tracking-tight">Pilotage centralise</h2>
+        <h2 className="mt-3 text-3xl font-semibold tracking-tight">Pilotage centralisé</h2>
         <p className="mt-4 max-w-3xl text-sm leading-7 text-white/70">
-          Retrouvez ici l&apos;etat du portail et accedez rapidement aux actions d&apos;administration.
+          Retrouvez ici l&apos;état du portail et accédez rapidement aux actions d&apos;administration.
         </p>
       </section>
 
@@ -39,13 +39,13 @@ export default async function AdminDashboardPage() {
           <div>
             <h3 className="text-xl font-semibold text-white">Actions rapides</h3>
             <p className="mt-2 text-sm text-white/65">
-              Gerer les sites existants ou ajouter une nouvelle vitrine.
+              Gérer les sites existants ou ajouter une nouvelle vitrine.
             </p>
           </div>
 
           <div className="flex flex-wrap gap-3">
             <Link
-              className="rounded-full bg-white px-5 py-3 text-sm font-medium text-neutral-950 transition hover:bg-neutral-200"
+              className="rounded-full border border-sky-400/40 bg-sky-500/15 px-5 py-3 text-sm font-medium text-sky-100 transition hover:bg-sky-500/25"
               href="/admin/sites/new"
             >
               Ajouter un site

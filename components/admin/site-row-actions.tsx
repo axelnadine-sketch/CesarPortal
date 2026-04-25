@@ -13,9 +13,9 @@ type SiteRowActionsProps = {
 
 export function SiteRowActions({ siteId, isActive, isFeatured }: SiteRowActionsProps) {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap items-center gap-2">
       <Link
-        className="rounded-full border border-white/10 px-3 py-2 text-xs text-white/80 transition hover:bg-white/10"
+        className="rounded-full border border-[#2d2d30] px-3 py-2 text-xs text-white/80 transition hover:bg-white/10"
         href={`/admin/sites/${siteId}/edit`}
       >
         Modifier
@@ -24,7 +24,7 @@ export function SiteRowActions({ siteId, isActive, isFeatured }: SiteRowActionsP
       <form action={toggleSiteActive}>
         <input name="siteId" type="hidden" value={siteId} />
         <button
-          className="rounded-full border border-white/10 px-3 py-2 text-xs text-white/80 transition hover:bg-white/10"
+          className="rounded-full border border-[#2d2d30] px-3 py-2 text-xs text-white/80 transition hover:bg-white/10"
           type="submit"
         >
           {isActive ? "Desactiver" : "Activer"}
@@ -34,7 +34,7 @@ export function SiteRowActions({ siteId, isActive, isFeatured }: SiteRowActionsP
       <form action={toggleSiteFeatured}>
         <input name="siteId" type="hidden" value={siteId} />
         <button
-          className="rounded-full border border-white/10 px-3 py-2 text-xs text-white/80 transition hover:bg-white/10"
+          className="rounded-full border border-[#2d2d30] px-3 py-2 text-xs text-white/80 transition hover:bg-white/10"
           type="submit"
         >
           {isFeatured ? "Retirer la mise en avant" : "Mettre en avant"}

@@ -1,3 +1,4 @@
+import { SiteCardImage } from "@/components/site/site-card-image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { getAllSites } from "@/lib/site-repository";
@@ -11,11 +12,11 @@ type SitesPageProps = {
 };
 
 const statusMessages: Record<string, string> = {
-  created: "Site cree avec succes.",
-  updated: "Site mis a jour avec succes.",
-  deleted: "Site supprime avec succes.",
-  toggled: "Mise a jour effectuee.",
-  invalid: "Action refusee: identifiant invalide.",
+  created: "Site créé avec succès.",
+  updated: "Site mis à jour avec succès.",
+  deleted: "Site supprimé avec succès.",
+  toggled: "Mise à jour effectuée.",
+  invalid: "Action refusée : identifiant invalide.",
   missing: "Le site cible est introuvable.",
   error: "Une erreur est survenue pendant l'action.",
 };
@@ -26,7 +27,7 @@ export default async function AdminSitesPage({ searchParams }: SitesPageProps) {
 
   return (
     <div className="grid gap-6">
-      <section className="flex flex-col gap-4 rounded-[2rem] border border-white/10 bg-white/5 p-6 md:flex-row md:items-end md:justify-between">
+      <section className="flex flex-col gap-4 rounded-[2rem] border border-[#2d2d30] bg-[#2d2d30] p-6 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.32em] text-white/45">Gestion des sites</p>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight">Catalogue admin</h2>
@@ -36,7 +37,7 @@ export default async function AdminSitesPage({ searchParams }: SitesPageProps) {
         </div>
 
         <Link
-          className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-medium text-neutral-950 transition hover:bg-neutral-200"
+          className="inline-flex items-center justify-center rounded-full border border-[#007acc]/40 bg-[#007acc]/20 px-5 py-3 text-sm font-medium text-[#cfe8ff] transition hover:bg-[#007acc]/30"
           href="/admin/sites/new"
         >
           Ajouter un site
@@ -49,14 +50,18 @@ export default async function AdminSitesPage({ searchParams }: SitesPageProps) {
         </div>
       ) : null}
 
-      <section className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/5">
+      <section className="overflow-hidden rounded-[2rem] border border-[#2d2d30] bg-[#2d2d30]">
         {sites.length ? (
-          <div className="grid gap-px bg-white/8">
+          <div className="grid gap-px bg-[#1e1e1e]">
             {sites.map((site) => (
               <article
-                className="grid gap-4 bg-neutral-950/85 p-5 xl:grid-cols-[1.5fr_1fr_1fr_auto]"
+                className="grid gap-4 bg-[#252526] p-5 xl:grid-cols-[120px_1.5fr_1fr_1fr_auto]"
                 key={site.id}
               >
+                <div className="relative h-20 overflow-hidden rounded-xl border border-[#3c3c3c] bg-[#1e1e1e]">
+                  <SiteCardImage alt={site.name} src={site.imageUrl} />
+                </div>
+
                 <div className="grid gap-2">
                   <div className="flex flex-wrap items-center gap-2">
                     <h3 className="text-lg font-semibold text-white">{site.name}</h3>
@@ -69,13 +74,13 @@ export default async function AdminSitesPage({ searchParams }: SitesPageProps) {
                 </div>
 
                 <div className="grid gap-2 text-sm text-white/70">
-                  <p>Slug: {site.slug}</p>
-                  <p>Ordre: {site.sortOrder}</p>
-                  <p>Tags: {formatTags(site.tags) || "Aucun"}</p>
+                  <p>Slug : {site.slug}</p>
+                  <p>Ordre : {site.sortOrder}</p>
+                  <p>Tags : {formatTags(site.tags) || "Aucun"}</p>
                 </div>
 
                 <div className="grid gap-1 text-sm text-white/60">
-                  <p>Cree le {site.createdAt.toLocaleDateString("fr-FR")}</p>
+                  <p>Créé le {site.createdAt.toLocaleDateString("fr-FR")}</p>
                   <p>Maj le {site.updatedAt.toLocaleDateString("fr-FR")}</p>
                 </div>
 
@@ -85,7 +90,7 @@ export default async function AdminSitesPage({ searchParams }: SitesPageProps) {
           </div>
         ) : (
           <div className="p-8 text-center text-sm text-white/60">
-            Aucun site en base pour le moment. Creez la premiere entree depuis l&apos;admin.
+            Aucun site en base pour le moment. Créez la première entrée depuis l&apos;admin.
           </div>
         )}
       </section>

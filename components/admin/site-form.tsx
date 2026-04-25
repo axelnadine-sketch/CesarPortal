@@ -161,7 +161,7 @@ export function SiteForm({
         <Input defaultValue={values.tags} id="tags" name="tags" placeholder="branding, seo, media" />
       </FormField>
 
-      <div className="flex flex-wrap gap-6 rounded-[1.75rem] border border-white/10 bg-white/5 p-5">
+      <div className="flex flex-wrap gap-6 rounded-[1.75rem] border border-[#2d2d30] bg-[#2d2d30] p-5">
         <label className="flex items-center gap-3 text-sm text-white/80">
           <Checkbox defaultChecked={values.isActive} id="isActive" name="isActive" />
           Site actif
