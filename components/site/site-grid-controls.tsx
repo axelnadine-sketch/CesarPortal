@@ -24,11 +24,21 @@ function getTime(value: SiteCardData["createdAt"]) {
   return Number.isNaN(time) ? 0 : time;
 }
 
-function shuffleSites(sites: SiteCardData[]) {
+function getSeededRandom(seed: number) {
+  let value = seed + 1;
+
+  return () => {
+    value = (value * 9301 + 49297) % 233280;
+    return value / 233280;
+  };
+}
+
+function shuffleSites(sites: SiteCardData[], seed: number) {
   const copy = [...sites];
+  const random = getSeededRandom(seed);
 
   for (let index = copy.length - 1; index > 0; index -= 1) {
-    const randomIndex = Math.floor(Math.random() * (index + 1));
+    const randomIndex = Math.floor(random() * (index + 1));
     [copy[index], copy[randomIndex]] = [copy[randomIndex], copy[index]];
   }
 
@@ -68,7 +78,7 @@ export function SiteGridControls({ sites }: SiteGridControlsProps) {
     });
 
     if (sortMode === "random") {
-      return shuffleSites(filtered);
+      return shuffleSites(filtered, randomKey);
     }
 
     return [...filtered].sort((a, b) => {

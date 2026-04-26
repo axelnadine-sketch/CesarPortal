@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { logoutAdmin } from "@/app/admin/actions";
-import { APP_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import { CesarPortalLogo } from "@/components/branding/cesarportal-logo";
 
 const navigation = [
   { href: "/admin", label: "Dashboard" },
@@ -20,7 +20,9 @@ export function AdminShell({ children }: AdminShellProps) {
         <header className="mb-8 flex flex-col gap-5 rounded-[2rem] border border-[#2d2d30] bg-[#2d2d30] p-5 backdrop-blur md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-xs uppercase tracking-[0.28em] text-white/45">Administration</p>
-            <h1 className="mt-2 text-2xl font-semibold">{APP_NAME}</h1>
+            <div className="mt-2">
+              <CesarPortalLogo variant="compact" />
+            </div>
           </div>
 
           <nav className="flex flex-wrap items-center gap-2">
