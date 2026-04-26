@@ -31,10 +31,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (pathname === "/admin/login") {
+  if (pathname === "/admin/login" || pathname === "/admin/login/submit") {
     const authenticated = await isAuthenticated(request);
 
-    if (authenticated) {
+    if (authenticated && pathname === "/admin/login") {
       return NextResponse.redirect(new URL("/admin", request.url));
     }
 
