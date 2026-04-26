@@ -21,7 +21,7 @@ export function AdminShell({ children }: AdminShellProps) {
           <div>
             <p className="text-xs uppercase tracking-[0.28em] text-white/45">Administration</p>
             <div className="mt-2">
-              <CesarPortalLogo variant="compact" />
+              <CesarPortalLogo href="/admin" variant="compact" />
             </div>
           </div>
 

@@ -1,5 +1,7 @@
+import Link from "next/link";
 type CesarPortalLogoProps = {
   variant?: "header" | "compact";
+  href?: string;
 };
 
 function PortalIcon() {
@@ -36,11 +38,15 @@ function PortalIcon() {
   );
 }
 
-export function CesarPortalLogo({ variant = "header" }: CesarPortalLogoProps) {
+export function CesarPortalLogo({ variant = "header", href = "/" }: CesarPortalLogoProps) {
   const isCompact = variant === "compact";
 
   return (
-    <div className="flex items-center gap-3">
+    <Link
+      aria-label="Retour à l'accueil CesarPortal"
+      className="flex w-fit items-center gap-3 transition hover:opacity-85"
+      href={href}
+    >
       <div className="grid h-11 w-11 place-items-center rounded-2xl border border-sky-400/35 bg-sky-950/20 shadow-[0_0_24px_rgba(14,165,233,0.14)]">
         <PortalIcon />
       </div>
@@ -51,6 +57,6 @@ export function CesarPortalLogo({ variant = "header" }: CesarPortalLogoProps) {
         </p>
         <p className="mt-1 text-xs text-slate-400">Portail central de vos sites</p>
       </div>
-    </div>
+    </Link>
   );
 }
