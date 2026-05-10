@@ -1,4 +1,4 @@
-﻿CREATE TABLE "Project" (
+CREATE TABLE "Project" (
     "id" TEXT NOT NULL,
     "name" VARCHAR(140) NOT NULL,
     "slug" VARCHAR(160) NOT NULL,
