@@ -2,6 +2,8 @@ import { Container } from "@/components/layout/container";
 import { Badge } from "@/components/ui/badge";
 import { getActiveProjects } from "@/lib/project-repository";
 
+export const dynamic = "force-dynamic";
+
 export default async function ProjectsPage() {
   const projects = await getActiveProjects();
 
