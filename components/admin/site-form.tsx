@@ -109,7 +109,7 @@ export function SiteForm({
             defaultValue={values.imageUrl}
             id="imageUrl"
             name="imageUrl"
-            placeholder="https://..."
+            placeholder="https://... ou /site-cards/site.jpg"
             required
           />
         </FormField>
