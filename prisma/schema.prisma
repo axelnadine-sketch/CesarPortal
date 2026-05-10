@@ -26,3 +26,22 @@ model Site {
   @@index([isActive, sortOrder])
   @@index([category])
 }
+
+model Project {
+  id               String   @id @default(cuid())
+  name             String   @db.VarChar(140)
+  slug             String   @unique @db.VarChar(160)
+  status           String   @default("A_REPRENDRE") @db.VarChar(40)
+  priority         String   @default("MOYENNE") @db.VarChar(40)
+  shortDescription String   @db.VarChar(280)
+  nextAction       String?  @db.Text
+  usefulLinks      String?  @db.Text
+  isActive         Boolean  @default(true)
+  sortOrder        Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([status])
+  @@index([priority])
+  @@index([isActive, sortOrder])
+}
