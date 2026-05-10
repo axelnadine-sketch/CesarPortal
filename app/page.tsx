@@ -16,6 +16,9 @@ export default async function HomePage() {
           <CesarPortalLogo />
           <div className="flex flex-wrap gap-3">
             <ButtonLink href="#sites">Voir les sites</ButtonLink>
+            <ButtonLink href="/projets" variant="secondary">
+              Voir les projets
+            </ButtonLink>
             <ButtonLink href="/admin/login" variant="secondary">
               Accès admin
             </ButtonLink>
